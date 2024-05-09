@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/app_text_style.dart';
+import 'package:se7ety/feature/auth/presentation/view/login_view.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({super.key});
@@ -69,7 +70,13 @@ class WelcomeView extends StatelessWidget {
                         Column(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginView(
+                                    index: 0,
+                                  ),
+                                ));
+                              },
                               child: Container(
                                   height: 70,
                                   decoration: BoxDecoration(
