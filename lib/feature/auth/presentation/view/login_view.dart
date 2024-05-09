@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:se7ety/core/functions/email_validate.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/app_text_style.dart';
+import 'package:se7ety/core/widgets/custom_error_daylog.dart';
+import 'package:se7ety/core/widgets/custom_looding_dilog.dart';
 import 'package:se7ety/feature/auth/presentation/view/register_view.dart';
 import 'package:se7ety/feature/auth/presentation/view_model/auth_cubit.dart';
 import 'package:se7ety/feature/auth/presentation/view_model/auth_states.dart';
@@ -33,14 +35,13 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthStates>(
       listener: (context, state) {
-        if (state is AuthSuccesState) {
+        if (State is AuthSuccesState) {
           if (widget.index == 0) {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const DoctorMainPage(),
-              ),
-              (route) => false,
-            );
+                MaterialPageRoute(
+                  builder: (context) => const DoctorMainPage(),
+                ),
+                (route) => false);
           } else {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -48,6 +49,11 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 (route) => false);
           }
+        } else if (state is AuthFailerState) {
+          Navigator.of(context).pop();
+          ShowErrorDilog(context, state.error);
+        } else {
+          showLoaderDialog(context);
         }
       },
       child: Scaffold(
@@ -131,7 +137,13 @@ class _LoginViewState extends State<LoginView> {
                               width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  if (_key.currentState!.validate()) {
+                                    await context.read<AuthCubit>().login(
+                                        _emailController.text,
+                                        _passwordController.text);
+                                  }
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.color1,
                                   elevation: 3,
