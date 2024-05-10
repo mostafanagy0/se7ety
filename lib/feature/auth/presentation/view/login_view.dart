@@ -172,7 +172,7 @@ class _LoginViewState extends State<LoginView> {
                                       Navigator.of(context)
                                           .pushReplacement(MaterialPageRoute(
                                         builder: (context) =>
-                                            const RegisterView(),
+                                            RegisterView(index: widget.index),
                                       ));
                                     },
                                     child: Text(
@@ -186,5 +186,12 @@ class _LoginViewState extends State<LoginView> {
                         ]))))),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
