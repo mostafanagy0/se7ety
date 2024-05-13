@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:se7ety/core/functions/email_validate.dart';
 import 'package:se7ety/core/utils/app_colors.dart';
 import 'package:se7ety/core/utils/app_text_style.dart';
 import 'package:se7ety/core/widgets/custom_error_daylog.dart';
@@ -49,6 +48,7 @@ class _RegisterViewState extends State<RegisterView> {
                 (route) => false);
           }
         } else if (state is AuthFailerState) {
+          Navigator.of(context).pop();
           ShowErrorDilog(context, state.error);
         } else {
           showLoaderDialog(context);
@@ -101,9 +101,10 @@ class _RegisterViewState extends State<RegisterView> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل الايميل';
-                          } else if (!emailValidate(value)) {
-                            return 'من فضلك ادخل الايميل صحيحا';
-                          } else {
+                          } //else if (!emailValidate(value)) {
+                          //return 'من فضلك ادخل الايميل صحيحا';
+                          //}
+                          else {
                             return null;
                           }
                         },
@@ -138,15 +139,17 @@ class _RegisterViewState extends State<RegisterView> {
                           child: ElevatedButton(
                             onPressed: () async {
                               if (_key.currentState!.validate()) {
-                                context.read<AuthCubit>().resisterDoctore(
-                                    _emailController.text,
-                                    _displayName.text,
-                                    _passwordController.text);
-                              } else {
-                                context.read<AuthCubit>().resisterPatient(
-                                    _displayName.text,
-                                    _emailController.text,
-                                    _passwordController.text);
+                                if (widget.index == 0) {
+                                  context.read<AuthCubit>().resisterDoctore(
+                                      _emailController.text,
+                                      _displayName.text,
+                                      _passwordController.text);
+                                } else {
+                                  context.read<AuthCubit>().resisterPatient(
+                                      _displayName.text,
+                                      _emailController.text,
+                                      _passwordController.text);
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

@@ -7,9 +7,9 @@ import 'package:se7ety/core/utils/app_text_style.dart';
 import 'package:se7ety/feature/auth/presentation/view_model/auth_cubit.dart';
 import 'package:se7ety/splash_view.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized;
-  Firebase.initializeApp(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: 'AIzaSyC50XAJti0mPVpVzHCx9dwGHskjzTwcJ4w',
           appId: 'com.example.se7ety',
